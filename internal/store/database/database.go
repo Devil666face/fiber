@@ -20,7 +20,7 @@ type Database struct {
 	PsqlConnect   string
 }
 
-func New(_config *config.Config, _tables []any) *Database {
+func Must(_config *config.Config, _tables []any) *Database {
 	d := Database{
 		config: _config,
 		tables: _tables,

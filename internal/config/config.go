@@ -37,7 +37,7 @@ type Config struct {
 	HTTPSRedirect string
 }
 
-func New() *Config {
+func Must() *Config {
 	cfg := Config{}
 	// if err := cleanenv.ReadEnv(&cfg); err != nil {
 	if err := cleanenv.ReadConfig(".env", &cfg); err != nil {

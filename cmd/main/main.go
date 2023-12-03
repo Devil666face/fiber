@@ -12,7 +12,7 @@ import (
 func main() {
 	wa := web.New()
 	if err := wa.Listen(); err != nil {
-		slog.Error(fmt.Sprintf("Start programm: %s", err))
+		slog.Error(fmt.Sprintf("start programm: %s", err))
 		os.Exit(1)
 	}
 }

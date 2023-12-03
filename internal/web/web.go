@@ -16,8 +16,8 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-type App struct {
-	app       *fiber.App
+type Web struct {
+	fiber     *fiber.App
 	static    func(*fiber.Ctx) error
 	media     *Media
 	config    *config.Config
@@ -28,17 +28,17 @@ type App struct {
 	tables    []any
 }
 
-func New() *App {
-	a := &App{
-		app: fiber.New(
+func New() *Web {
+	a := &Web{
+		fiber: fiber.New(
 			fiber.Config{
 				AppName:      "fiber",
 				ErrorHandler: handlers.DefaultErrorHandler,
 			},
 		),
 		static:    NewStatic(),
-		media:     NewMedia(),
-		config:    config.New(),
+		media:     MustMedia(),
+		config:    config.Must(),
 		validator: validators.New(),
 		tables: []any{
 			&models.User{},
@@ -50,37 +50,37 @@ func New() *App {
 	return a
 }
 
-func (a *App) setStores() {
-	a.database = database.New(a.config, a.tables)
+func (a *Web) setStores() {
+	a.database = database.Must(a.config, a.tables)
 	a.session = session.New(a.config, a.database)
 }
 
-func (a *App) setStatic() {
-	a.app.Use(routes.StaticPrefix, a.static)
-	a.app.Static(routes.MediaPrefix, a.media.path, a.media.handler)
+func (a *Web) setStatic() {
+	a.fiber.Use(routes.StaticPrefix, a.static)
+	a.fiber.Static(routes.MediaPrefix, a.media.path, a.media.handler)
 }
 
-func (a *App) setRoutes() {
-	a.router = routes.New(a.app, a.config, a.database, a.session, a.validator)
+func (a *Web) setRoutes() {
+	a.router = routes.New(a.fiber, a.config, a.database, a.session, a.validator)
 }
 
-func (a *App) Listen() error {
+func (a *Web) Listen() error {
 	if a.config.UseTLS {
 		return a.listenTLS()
 	}
 	return a.listenNoTLS()
 }
 
-func (a *App) listenTLS() error {
-	go a.redirectServer()
-	return a.app.ListenTLS(a.config.ConnectHTTPS, a.config.TLSCrt, a.config.TLSKey)
+func (a *Web) listenTLS() error {
+	go a.mustRedirectServer()
+	return a.fiber.ListenTLS(a.config.ConnectHTTPS, a.config.TLSCrt, a.config.TLSKey)
 }
 
-func (a *App) listenNoTLS() error {
-	return a.app.Listen(a.config.ConnectHTTP)
+func (a *Web) listenNoTLS() error {
+	return a.fiber.Listen(a.config.ConnectHTTP)
 }
 
-func (a *App) redirectServer() {
+func (a *Web) mustRedirectServer() {
 	app := fiber.New(fiber.Config{DisableStartupMessage: true})
 	app.Use(func(c *fiber.Ctx) error {
 		return c.Redirect(a.config.HTTPSRedirect)

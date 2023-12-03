@@ -31,7 +31,7 @@ func NewStatic() func(*fiber.Ctx) error {
 	})
 }
 
-func NewMedia() *Media {
+func MustMedia() *Media {
 	path, err := utils.SetPath(assets.DirMedia)
 	if err != nil {
 		path = assets.DirMedia

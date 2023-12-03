@@ -34,6 +34,7 @@ func (c View) CsrfToken() string {
 	}
 	return ""
 }
+
 func (c View) URL(name string) string {
 	return c.getRouteURL(name, fiber.Map{})
 }

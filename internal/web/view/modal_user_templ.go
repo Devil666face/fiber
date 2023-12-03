@@ -10,10 +10,6 @@ import "context"
 import "io"
 import "bytes"
 
-import (
-	"github.com/Devil666face/fiber/internal/models"
-)
-
 func ModalUser(v *View, m Map) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
@@ -31,20 +27,20 @@ func ModalUser(v *View, m Map) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if user, ok := m["User"].(models.User); ok {
-			templ_7745c5c3_Var2 := `📝 Edit `
+		if v.Ctx.OriginalURL() == v.URL("user_create") {
+			templ_7745c5c3_Var2 := `🙍‍♂️ Create user`
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var2)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-			var templ_7745c5c3_Var3 string = user.Email
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
+		} else {
+			templ_7745c5c3_Var3 := `📝 Edit `
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var3)
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
-		} else {
-			templ_7745c5c3_Var4 := `🙍‍♂️ Create user`
-			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var4)
+			var templ_7745c5c3_Var4 string = m.getUser().Email
+			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}

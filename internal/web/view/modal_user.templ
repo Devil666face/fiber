@@ -1,16 +1,12 @@
 package view
 
-import (
-	"github.com/Devil666face/fiber/internal/models"
-)
-
 templ ModalUser(v *View, m Map) {
 	<div class="modal-header">
 		<h1 class="modal-title fs-5" id="staticBackdropLabel">
-			if user,ok:=m["User"].(models.User);ok {
-				📝 Edit { user.Email }
-			} else {
+			if v.Ctx.OriginalURL() == v.URL("user_create") {
 				🙍‍♂️ Create user
+			} else {
+				📝 Edit { m.getUser().Email }
 			}
 		</h1>
 		<button

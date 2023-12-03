@@ -11,7 +11,9 @@ templ Modal(id string) {
  		aria-hidden="true"
 	>
 		<div class="modal-dialog">
-			<div class="modal-content" id={ id+"_content" }></div>
+			<div class="modal-content" id={ id+"_content" }>
+				{ children... }
+			</div>
 		</div>
 	</div>
 }

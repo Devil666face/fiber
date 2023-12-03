@@ -10,7 +10,7 @@ import (
 var ErrInSession = fiber.ErrInternalServerError
 
 func LoginPage(h *Handler) error {
-	return h.RenderTempl(view.Login, fiber.Map{})
+	return h.RenderTempl(view.Login, view.Map{})
 }
 
 func Login(h *Handler) error {

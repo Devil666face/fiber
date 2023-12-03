@@ -1,8 +1,6 @@
 package view
 
-import "github.com/gofiber/fiber/v2"
-
-templ Login(v *View, m fiber.Map) {
+templ Login(v *View, m Map) {
 	@Base("Login") {
 		<main class="form-signin m-auto h-100 d-flex align-items-center justify-content-center">
 			<form hx-post={ v.URL("login") } enctype="multipart/form-data">

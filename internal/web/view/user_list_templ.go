@@ -10,9 +10,7 @@ import "context"
 import "io"
 import "bytes"
 
-import "github.com/gofiber/fiber/v2"
-
-func UserList(v *View, m fiber.Map) templ.Component {
+func UserList(v *View, m Map) templ.Component {
 	return templ.ComponentFunc(func(ctx context.Context, templ_7745c5c3_W io.Writer) (templ_7745c5c3_Err error) {
 		templ_7745c5c3_Buffer, templ_7745c5c3_IsBuffer := templ_7745c5c3_W.(*bytes.Buffer)
 		if !templ_7745c5c3_IsBuffer {
@@ -66,6 +64,14 @@ func UserList(v *View, m fiber.Map) templ.Component {
 			return templ_7745c5c3_Err
 		})
 		templ_7745c5c3_Err = Base("List of users").Render(templ.WithChildren(ctx, templ_7745c5c3_Var2), templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Modal("create_user").Render(ctx, templ_7745c5c3_Buffer)
+		if templ_7745c5c3_Err != nil {
+			return templ_7745c5c3_Err
+		}
+		templ_7745c5c3_Err = Modal("edit_user").Render(ctx, templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

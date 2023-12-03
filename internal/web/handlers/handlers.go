@@ -43,7 +43,7 @@ func New(
 // 	return component.Render(h.Ctx().UserContext(), h.Ctx().Response().BodyWriter())
 // }
 
-func (h *Handler) RenderTempl(component func(*view.View, fiber.Map) templ.Component, m fiber.Map) error {
+func (h *Handler) RenderTempl(component func(*view.View, view.Map) templ.Component, m view.Map) error {
 	h.Ctx().Response().Header.SetContentType(fiber.MIMETextHTMLCharsetUTF8)
 	return component(view.New(h.Ctx()), m).Render(h.Ctx().UserContext(), h.Ctx().Response().BodyWriter())
 }

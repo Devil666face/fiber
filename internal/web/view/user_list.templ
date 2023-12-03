@@ -1,8 +1,6 @@
 package view
 
-import "github.com/gofiber/fiber/v2"
-
-templ UserList(v *View, m fiber.Map) {
+templ UserList(v *View, m Map) {
 	@Base("List of users") {
 		<div class="container pt-5">
 			<div class="row">
@@ -23,4 +21,6 @@ templ UserList(v *View, m fiber.Map) {
 			@UserContent(v, m)
 		</div>
 	}
+	@Modal("create_user")
+	@Modal("edit_user")
 }

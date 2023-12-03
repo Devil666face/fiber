@@ -6,4 +6,4 @@
 /postgres
 /server.crt
 /server.key
-# /vendor
+/vendor

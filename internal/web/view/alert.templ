@@ -1,8 +1,6 @@
 package view
 
-import "github.com/gofiber/fiber/v2"
-
-templ Alert(m fiber.Map) {
+templ Alert(m Map) {
 	if message,ok:=m["Message"].(string);ok {
 		<div class="alert alert-danger text-left" role="alert">
 			❌ { message }

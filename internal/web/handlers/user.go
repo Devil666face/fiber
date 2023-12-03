@@ -13,20 +13,15 @@ import (
 )
 
 func UserListPage(h *Handler) error {
-	// && h.ViewCtx().IsHtmxCurrentURL()
 	if h.ViewCtx().IsHtmx() {
-		return h.ViewCtx().RenderWithCtx("user_content", fiber.Map{
+		return h.RenderTempl(view.UserContent, view.Map{
 			"Users": models.GetAllUsers(h.Database()),
 		})
 	}
-	return h.RenderTempl(view.UserList, fiber.Map{
+	return h.RenderTempl(view.UserList, view.Map{
 		"Title": "List of users",
 		"Users": models.GetAllUsers(h.Database()),
 	})
-	// return h.ViewCtx().RenderWithCtx("user_list", fiber.Map{
-	// 	"Title": "List of users",
-	// 	"Users": models.GetAllUsers(h.Database()),
-	// }, "base")
 }
 
 func UserEditForm(h *Handler) error {
@@ -46,7 +41,7 @@ func UserEditForm(h *Handler) error {
 }
 
 func UserCreateForm(h *Handler) error {
-	return h.ViewCtx().RenderWithCtx("user_create", fiber.Map{})
+	return h.RenderTempl(view.UserCreate, view.Map{})
 }
 
 func UserCreate(h *Handler) error {
@@ -55,16 +50,18 @@ func UserCreate(h *Handler) error {
 		return fiber.ErrBadRequest
 	}
 	if err := u.Validate(h.Validator()); err != nil {
-		return h.ViewCtx().RenderWithCtx("user_create", fiber.Map{
+		return h.RenderTempl(view.UserCreate, view.Map{
+			"User":    u,
 			"Message": err.Error(),
 		})
 	}
 	if err := u.Create(h.Database()); err != nil {
-		return h.ViewCtx().RenderWithCtx("user_create", fiber.Map{
+		return h.RenderTempl(view.UserCreate, view.Map{
+			"User":    u,
 			"Message": err.Error(),
 		})
 	}
-	return h.ViewCtx().RenderWithCtx("user_create", fiber.Map{
+	return h.RenderTempl(view.UserCreate, view.Map{
 		"Success": fmt.Sprintf("User %s - created", u.Email),
 	})
 }

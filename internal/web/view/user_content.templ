@@ -1,10 +1,9 @@
 package view
 
-import "github.com/gofiber/fiber/v2"
 import "github.com/Devil666face/fiber/internal/models"
 import "fmt"
 
-templ UserContent(v *View, m fiber.Map) {
+templ UserContent(v *View, m Map) {
 	<div id="users">
 		for _, user:=range m["Users"].([]models.User) {
 			<div class="row mb-2" id={ fmt.Sprintf("user_%d",user.ID) }>

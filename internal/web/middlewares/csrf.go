@@ -2,6 +2,7 @@ package middlewares
 
 import (
 	"github.com/Devil666face/fiber/internal/web/handlers"
+	"github.com/Devil666face/fiber/internal/web/view"
 
 	"github.com/gofiber/fiber/v2/middleware/csrf"
 )
@@ -19,7 +20,7 @@ func Csrf(h *handlers.Handler) error {
 	return csrf.New(csrf.Config{
 		Storage: h.Storage(),
 		// KeyLookup:  "form:csrf",
-		ContextKey:     handlers.Csrf,
+		ContextKey:     view.Csrf,
 		CookieHTTPOnly: true,
 		SingleUseToken: true,
 	})(h.Ctx())

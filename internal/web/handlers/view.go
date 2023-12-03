@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log/slog"
 
+	"github.com/Devil666face/fiber/internal/web/view"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -21,21 +22,21 @@ func (c ViewCtx) RenderWithCtx(name string, bind fiber.Map, layouts ...string) e
 }
 
 func (c ViewCtx) CsrfToken() string {
-	if token, ok := c.Locals(Csrf).(string); ok {
+	if token, ok := c.Locals(view.Csrf).(string); ok {
 		return token
 	}
 	return ""
 }
 
 func (c ViewCtx) IsHtmx() bool {
-	if htmx, ok := c.Locals(Htmx).(bool); ok {
+	if htmx, ok := c.Locals(view.Htmx).(bool); ok {
 		return htmx
 	}
 	return false
 }
 
 func (c ViewCtx) ClientRedirect(redirectURL string) error {
-	c.Set(HXRedirect, redirectURL)
+	c.Set(view.HXRedirect, redirectURL)
 	return c.SendStatus(fiber.StatusFound)
 }
 

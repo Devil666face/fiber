@@ -9,8 +9,6 @@ import (
 )
 
 const (
-	AuthKey      = "authenticated"
-	UserKey      = "User"
 	UserID       = "user_id"
 	Csrf         = "csrf"
 	Htmx         = "htmx"
@@ -22,7 +20,11 @@ const (
 )
 
 const (
-	userKey = "User"
+	AuthKey    = "authenticated"
+	UserKey    = "User"
+	UsersKey   = "Users"
+	MessageKey = "Message"
+	SuccessKey = "Success"
 )
 
 type View struct {
@@ -39,7 +41,7 @@ func (m Map) get(key string) any {
 }
 
 func (m Map) getUser() models.User {
-	if user, ok := m.get(userKey).(models.User); ok {
+	if user, ok := m.get(UserKey).(models.User); ok {
 		return user
 	}
 	return models.User{}

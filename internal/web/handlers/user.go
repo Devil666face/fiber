@@ -15,12 +15,11 @@ import (
 func UserListPage(h *Handler) error {
 	if h.ViewCtx().IsHtmx() {
 		return h.RenderTempl(view.UserContent, view.Map{
-			"Users": models.GetAllUsers(h.Database()),
+			view.UsersKey: models.GetAllUsers(h.Database()),
 		})
 	}
 	return h.RenderTempl(view.UserList, view.Map{
-		"Title": "List of users",
-		"Users": models.GetAllUsers(h.Database()),
+		view.UsersKey: models.GetAllUsers(h.Database()),
 	})
 }
 
@@ -35,8 +34,8 @@ func UserEditForm(h *Handler) error {
 		return fiber.ErrNotFound
 	}
 	u.Password = ""
-	return h.ViewCtx().RenderWithCtx("user_edit", fiber.Map{
-		UserKey: u,
+	return h.RenderTempl(view.UserEdit, view.Map{
+		view.UserKey: u,
 	})
 }
 
@@ -51,18 +50,18 @@ func UserCreate(h *Handler) error {
 	}
 	if err := u.Validate(h.Validator()); err != nil {
 		return h.RenderTempl(view.UserCreate, view.Map{
-			"User":    u,
-			"Message": err.Error(),
+			view.UserKey:    u,
+			view.MessageKey: err.Error(),
 		})
 	}
 	if err := u.Create(h.Database()); err != nil {
 		return h.RenderTempl(view.UserCreate, view.Map{
-			"User":    u,
-			"Message": err.Error(),
+			view.UserKey:    u,
+			view.MessageKey: err.Error(),
 		})
 	}
 	return h.RenderTempl(view.UserCreate, view.Map{
-		"Success": fmt.Sprintf("User %s - created", u.Email),
+		view.SuccessKey: fmt.Sprintf("User %s - created", u.Email),
 	})
 }
 
@@ -87,29 +86,28 @@ func UserEdit(h *Handler) error {
 		if errors.Is(err, validators.ErrPasswordRequired) {
 			in.Password, in.PasswordConfirm = u.Password, u.Password
 		} else {
-			return h.ViewCtx().RenderWithCtx("user_edit", fiber.Map{
-				UserKey:   u,
-				"Message": err,
+			return h.RenderTempl(view.UserEdit, view.Map{
+				view.UserKey:    u,
+				view.MessageKey: err.Error(),
 			})
 		}
 	}
 	u.Email, u.Admin, u.Password = in.Email, in.Admin, in.Password
 	if err := u.Update(h.Database()); err != nil {
-		return h.ViewCtx().RenderWithCtx("user_edit", fiber.Map{
-			UserKey:   u,
-			"Message": err,
+		return h.RenderTempl(view.UserEdit, view.Map{
+			view.UserKey:    u,
+			view.MessageKey: err.Error(),
 		})
 	}
 	if err := h.DestroySessionByID(u.SessionKey); err != nil {
-		return h.ViewCtx().RenderWithCtx("user_edit", fiber.Map{
-			UserKey:   u,
-			"Message": err,
-			// "Message":   ErrInSession,
+		return h.RenderTempl(view.UserEdit, view.Map{
+			view.UserKey:    u,
+			view.MessageKey: err.Error(),
 		})
 	}
-	return h.ViewCtx().RenderWithCtx("user_edit", fiber.Map{
-		UserKey:   u,
-		"Success": "Successful update user",
+	return h.RenderTempl(view.UserEdit, view.Map{
+		view.UserKey:    u,
+		view.SuccessKey: "Successful update user",
 	})
 }
 
@@ -132,7 +130,7 @@ func UserDelete(h *Handler) error {
 	if err := h.DestroySessionByID(u.SessionKey); err != nil {
 		return ErrInSession
 	}
-	return h.ViewCtx().RenderWithCtx("user_content", fiber.Map{
-		"Users": models.GetAllUsers(h.Database()),
+	return h.RenderTempl(view.UserContent, view.Map{
+		view.UsersKey: models.GetAllUsers(h.Database()),
 	})
 }

@@ -29,10 +29,10 @@ func Login(h *Handler) error {
 			"Message": err.Error(),
 		}, "base")
 	}
-	if err := h.SetInSession(AuthKey, true); err != nil {
+	if err := h.SetInSession(view.AuthKey, true); err != nil {
 		return ErrInSession
 	}
-	if err := h.SetInSession(UserID, u.ID); err != nil {
+	if err := h.SetInSession(view.UserID, u.ID); err != nil {
 		return ErrInSession
 	}
 	if u.SessionKey, err = h.SessionID(); err != nil {

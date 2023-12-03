@@ -7,6 +7,8 @@ templ Index(v *View, m fiber.Map) {
 		<div>
 			{ "Index" }
 		</div>
-		<body onload={ Token(v.CsrfToken()) }></body>
+		@Token(v.CsrfToken())
 	}
 }
+
+// <body onload={ Token(v.CsrfToken()) }></body>

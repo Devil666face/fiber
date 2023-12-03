@@ -44,6 +44,6 @@ templ UserContent(v *View, m fiber.Map) {
 				</div>
 			</div>
 		}
-		<body onload={ Token(v.CsrfToken()) }></body>
+		@Token(v.CsrfToken())
 	</div>
 }

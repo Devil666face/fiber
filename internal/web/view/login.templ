@@ -39,5 +39,5 @@ templ Login(v *View, m fiber.Map) {
 			</form>
 		</main>
 	}
-	<body onload={ Token(v.CsrfToken()) }></body>
+	@Token(v.CsrfToken())
 }

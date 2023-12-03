@@ -1,0 +1,12 @@
+package view
+
+script Token(token string) {
+  document.body.addEventListener("htmx:configRequest", (event) => {
+    event.detail.headers["X-CSRF-Token"] = token;
+  });
+  console.log(token);
+}
+
+// if (event.detail["verb"] !== "get") {
+//   event.detail.unfilteredParameters["csrf"] =  token ;
+// }

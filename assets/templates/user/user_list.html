@@ -1,0 +1,47 @@
+{{ define "user_list" }}
+<div class="container pt-5">
+  <div class="row">
+    <div class="col">
+      <button type="button" class="btn btn-outline-primary form-control mb-2" data-bs-toggle="modal"
+        data-bs-target="#create_user" hx-get='{{ .c.URL "user_create" }}' hx-swap="innerHTML"
+        hx-target="#create_user_content">
+        Create user 🙍‍♂️
+      </button>
+    </div>
+    {{ template "user_content" . }}
+  </div>
+</div>
+
+{{ $create_id:="create_user" }}
+{{ template "modal" $create_id }}
+
+{{ $edit_id:="edit_user" }}
+{{ template "modal" $edit_id }}
+
+{{ end }}
+
+{{ block "user_content" . }}
+{{ $c := .c }}
+<div id="users">
+  {{ range .Users }}
+  <div class="row mb-2" id="user_{{ .ID }}">
+    <div class="col">{{ .ID }}</div>
+    <div class="col">{{ .Email }}</div>
+    <div class="col">{{ if .Admin }}✅{{ else }}❌{{ end }}</div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#edit_user"
+        hx-get='{{ $c.URLto "user_edit" "id" .ID }}' hx-swap="innerHTML" hx-target="#edit_user_content">
+        Edit 📝
+      </button>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-danger" hx-confirm="🗑 Delete user - {{ .Email }}?"
+        hx-swap="innerHTML" hx-delete='{{ $c.URLto "user_delete" "id" .ID }}' hx-target="#users">
+        Delete 🗑
+      </button>
+    </div>
+  </div>
+  {{ end }}
+  {{ template "csrf" . }}
+</div>
+{{ end }}

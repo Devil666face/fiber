@@ -1,0 +1,26 @@
+package view
+
+import "github.com/gofiber/fiber/v2"
+
+templ UserList(v *View, m fiber.Map) {
+	@Base("List of users") {
+		<div class="container pt-5">
+			<div class="row">
+				<div class="col">
+					<button
+ 						type="button"
+ 						class="btn btn-outline-primary form-control mb-2"
+ 						data-bs-toggle="modal"
+ 						data-bs-target="#create_user"
+ 						hx-get={ v.URL("user_create") }
+ 						hx-swap="innerHTML"
+ 						hx-target="#create_user_content"
+					>
+						Create user 🙍‍♂️
+					</button>
+				</div>
+			</div>
+			@UserContent(v, m)
+		</div>
+	}
+}

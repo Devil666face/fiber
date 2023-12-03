@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:bullseye
+    environment:
+      POSTGRES_DB: "db"
+      POSTGRES_USER: "superuser"
+      POSTGRES_PASSWORD: "Qwerty123!"
+      PGDATA: /data/postgres
+    volumes:
+      - ./postgres:/data/postgres
+    restart: always
+
+  fiber:
+    container_name: fiber
+    image: ghcr.io/devil666face/fiber:main
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+    env_file:
+      - .env
+    environment:
+      APP_NAME: "fiber"
+      IP: "0.0.0.0"
+      POSTGRES: "true"
+      POSTGRES_HOST: "postgres"
+    depends_on:
+      - postgres
+    restart: always
+    ports:
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:4443:4443"

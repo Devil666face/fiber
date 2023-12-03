@@ -1,0 +1,27 @@
+{{ define "user_create" }}
+{{ template "modal_header" . }}
+<form hx-post='{{ .c.URL "user_create" }}' hx-swap="innerHTML" hx-target="#create_user_content">
+  {{ template "user_form" . }}
+</form>
+{{ end }}
+
+{{ define "user_edit" }}
+{{ template "modal_header" . }}
+<form hx-put='{{ .c.URLto "user_edit" "id" .User.ID }}' hx-swap="innerHTML" hx-target="#edit_user_content">
+  {{ template "user_form" . }}
+</form>
+{{ end }}
+
+{{ block "modal_header" . }}
+<div class="modal-header">
+  <h1 class="modal-title fs-5" id="staticBackdropLabel">
+    {{ if .User }}
+    📝 Edit {{ .User.Email }}
+    {{ else }}
+    🙍‍♂️ Create user
+    {{ end }}
+  </h1>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" hx-get='{{ .c.URL "user_list" }}'
+    hx-swap="innerHTML" hx-target="#users"></button>
+</div>
+{{ end }}

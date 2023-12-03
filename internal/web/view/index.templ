@@ -1,0 +1,12 @@
+package view
+
+import "github.com/gofiber/fiber/v2"
+
+templ Index(v *View, m fiber.Map) {
+	@Base("Index") {
+		<div>
+			{ "Index" }
+		</div>
+		<body onload={ Token(v.CsrfToken()) }></body>
+	}
+}

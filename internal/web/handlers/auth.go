@@ -10,7 +10,7 @@ import (
 var ErrInSession = fiber.ErrInternalServerError
 
 func LoginPage(h *Handler) error {
-	return h.RenderTempl(view.Login, view.Map{})
+	return h.Render(view.Login, view.Map{})
 }
 
 func Login(h *Handler) error {
@@ -19,15 +19,14 @@ func Login(h *Handler) error {
 		in  = &models.User{}
 		err error
 	)
-	if err := h.ViewCtx().BodyParser(in); err != nil {
+	if err := h.Ctx().BodyParser(in); err != nil {
 		return err
 	}
 	u.Email = in.Email
 	if err := u.LoginValidate(h.Database(), h.Validator(), in.Password); err != nil {
-		return h.ViewCtx().RenderWithCtx("login", fiber.Map{
-			"Title":   "Login",
-			"Message": err.Error(),
-		}, "base")
+		return h.Render(view.Login, view.Map{
+			view.MessageKey: err.Error(),
+		})
 	}
 	if err := h.SetInSession(view.AuthKey, true); err != nil {
 		return ErrInSession
@@ -41,12 +40,12 @@ func Login(h *Handler) error {
 	if err := u.Update(h.Database()); err != nil {
 		return ErrInSession
 	}
-	return h.ViewCtx().ClientRedirect(h.ViewCtx().URL("index"))
+	return h.View().ClientRedirect(h.View().URL("index"))
 }
 
 func Logout(h *Handler) error {
 	if err := h.DestroySession(); err != nil {
 		return ErrInSession
 	}
-	return h.ViewCtx().RedirectToRoute("login", nil)
+	return h.Ctx().RedirectToRoute("login", nil)
 }

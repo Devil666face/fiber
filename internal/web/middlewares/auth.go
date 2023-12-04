@@ -16,29 +16,29 @@ func Auth(h *handlers.Handler) error {
 		ok  bool
 	)
 	if auth, err := h.GetFromSession(view.AuthKey); auth == nil || err != nil {
-		return h.ViewCtx().Status(fiber.StatusUnauthorized).
+		return h.Ctx().Status(fiber.StatusUnauthorized).
 			RedirectToRoute("login", nil)
 	}
 	if uID, err = h.GetFromSession(view.UserID); uID == nil || err != nil {
-		return h.ViewCtx().Status(fiber.StatusUnauthorized).
+		return h.Ctx().Status(fiber.StatusUnauthorized).
 			RedirectToRoute("login", nil)
 	}
 	if u.ID, ok = uID.(uint); !ok {
-		return h.ViewCtx().Status(fiber.StatusUnauthorized).
+		return h.Ctx().Status(fiber.StatusUnauthorized).
 			RedirectToRoute("login", nil)
 	}
 	if err := u.Get(h.Database()); err != nil {
-		return h.ViewCtx().Status(fiber.StatusUnauthorized).
+		return h.Ctx().Status(fiber.StatusUnauthorized).
 			RedirectToRoute("login", nil)
 	}
-	h.ViewCtx().Locals(view.UserKey, u)
-	return h.ViewCtx().Next()
+	h.Ctx().Locals(view.UserKey, u)
+	return h.Ctx().Next()
 }
 
 func AlreadyLogin(h *handlers.Handler) error {
 	auth, err := h.GetFromSession(view.AuthKey)
 	if auth, ok := auth.(bool); auth && ok && err == nil {
-		return h.ViewCtx().RedirectToRoute("index", nil)
+		return h.Ctx().RedirectToRoute("index", nil)
 	}
-	return h.ViewCtx().Next()
+	return h.Ctx().Next()
 }

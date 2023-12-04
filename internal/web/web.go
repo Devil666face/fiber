@@ -23,7 +23,7 @@ type Web struct {
 	config    *config.Config
 	database  *database.Database
 	router    *routes.Router
-	session   *session.Store
+	store     *session.Store
 	validator *validators.Validator
 	tables    []any
 }
@@ -52,7 +52,7 @@ func New() *Web {
 
 func (a *Web) setStores() {
 	a.database = database.Must(a.config, a.tables)
-	a.session = session.New(a.config, a.database)
+	a.store = session.New(a.config, a.database)
 }
 
 func (a *Web) setStatic() {
@@ -61,7 +61,7 @@ func (a *Web) setStatic() {
 }
 
 func (a *Web) setRoutes() {
-	a.router = routes.New(a.fiber, a.config, a.database, a.session, a.validator)
+	a.router = routes.New(a.fiber, a.config, a.database, a.store, a.validator)
 }
 
 func (a *Web) Listen() error {

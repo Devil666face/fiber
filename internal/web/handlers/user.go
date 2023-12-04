@@ -13,19 +13,19 @@ import (
 )
 
 func UserListPage(h *Handler) error {
-	if h.ViewCtx().IsHtmx() {
-		return h.RenderTempl(view.UserContent, view.Map{
+	if h.View().IsHtmx() {
+		return h.Render(view.UserContent, view.Map{
 			view.UsersKey: models.GetAllUsers(h.Database()),
 		})
 	}
-	return h.RenderTempl(view.UserList, view.Map{
+	return h.Render(view.UserList, view.Map{
 		view.UsersKey: models.GetAllUsers(h.Database()),
 	})
 }
 
 func UserEditForm(h *Handler) error {
 	u := models.User{}
-	id, err := strconv.Atoi(h.ViewCtx().Params("id"))
+	id, err := strconv.Atoi(h.Ctx().Params("id"))
 	if err != nil {
 		return fiber.ErrNotFound
 	}
@@ -34,33 +34,33 @@ func UserEditForm(h *Handler) error {
 		return fiber.ErrNotFound
 	}
 	u.Password = ""
-	return h.RenderTempl(view.UserEdit, view.Map{
+	return h.Render(view.UserEdit, view.Map{
 		view.UserKey: u,
 	})
 }
 
 func UserCreateForm(h *Handler) error {
-	return h.RenderTempl(view.UserCreate, view.Map{})
+	return h.Render(view.UserCreate, view.Map{})
 }
 
 func UserCreate(h *Handler) error {
 	u := models.User{}
-	if err := h.ViewCtx().BodyParser(&u); err != nil {
+	if err := h.Ctx().BodyParser(&u); err != nil {
 		return fiber.ErrBadRequest
 	}
 	if err := u.Validate(h.Validator()); err != nil {
-		return h.RenderTempl(view.UserCreate, view.Map{
+		return h.Render(view.UserCreate, view.Map{
 			view.UserKey:    u,
 			view.MessageKey: err.Error(),
 		})
 	}
 	if err := u.Create(h.Database()); err != nil {
-		return h.RenderTempl(view.UserCreate, view.Map{
+		return h.Render(view.UserCreate, view.Map{
 			view.UserKey:    u,
 			view.MessageKey: err.Error(),
 		})
 	}
-	return h.RenderTempl(view.UserCreate, view.Map{
+	return h.Render(view.UserCreate, view.Map{
 		view.SuccessKey: fmt.Sprintf("User %s - created", u.Email),
 	})
 }
@@ -70,10 +70,10 @@ func UserEdit(h *Handler) error {
 		u  = models.User{}
 		in = models.User{}
 	)
-	if err := h.ViewCtx().BodyParser(&in); err != nil {
+	if err := h.Ctx().BodyParser(&in); err != nil {
 		return err
 	}
-	id, err := strconv.Atoi(h.ViewCtx().Params("id"))
+	id, err := strconv.Atoi(h.Ctx().Params("id"))
 	if err != nil {
 		return fiber.ErrNotFound
 	}
@@ -86,7 +86,7 @@ func UserEdit(h *Handler) error {
 		if errors.Is(err, validators.ErrPasswordRequired) {
 			in.Password, in.PasswordConfirm = u.Password, u.Password
 		} else {
-			return h.RenderTempl(view.UserEdit, view.Map{
+			return h.Render(view.UserEdit, view.Map{
 				view.UserKey:    u,
 				view.MessageKey: err.Error(),
 			})
@@ -94,18 +94,18 @@ func UserEdit(h *Handler) error {
 	}
 	u.Email, u.Admin, u.Password = in.Email, in.Admin, in.Password
 	if err := u.Update(h.Database()); err != nil {
-		return h.RenderTempl(view.UserEdit, view.Map{
+		return h.Render(view.UserEdit, view.Map{
 			view.UserKey:    u,
 			view.MessageKey: err.Error(),
 		})
 	}
 	if err := h.DestroySessionByID(u.SessionKey); err != nil {
-		return h.RenderTempl(view.UserEdit, view.Map{
+		return h.Render(view.UserEdit, view.Map{
 			view.UserKey:    u,
 			view.MessageKey: err.Error(),
 		})
 	}
-	return h.RenderTempl(view.UserEdit, view.Map{
+	return h.Render(view.UserEdit, view.Map{
 		view.UserKey:    u,
 		view.SuccessKey: "Successful update user",
 	})
@@ -113,10 +113,10 @@ func UserEdit(h *Handler) error {
 
 func UserDelete(h *Handler) error {
 	u := models.User{}
-	if err := h.ViewCtx().BodyParser(&u); err != nil {
+	if err := h.Ctx().BodyParser(&u); err != nil {
 		return err
 	}
-	id, err := strconv.Atoi(h.ViewCtx().Params("id"))
+	id, err := strconv.Atoi(h.Ctx().Params("id"))
 	if err != nil {
 		return fiber.ErrNotFound
 	}
@@ -130,7 +130,7 @@ func UserDelete(h *Handler) error {
 	if err := h.DestroySessionByID(u.SessionKey); err != nil {
 		return ErrInSession
 	}
-	return h.RenderTempl(view.UserContent, view.Map{
+	return h.Render(view.UserContent, view.Map{
 		view.UsersKey: models.GetAllUsers(h.Database()),
 	})
 }

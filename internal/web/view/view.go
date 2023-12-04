@@ -75,7 +75,30 @@ func (c View) URLto(name, key string, val any) string {
 func (c View) getRouteURL(name string, fmap fiber.Map) string {
 	url, err := c.GetRouteURL(name, fmap)
 	if err != nil {
-		slog.Error(fmt.Sprintf("Url %s not found", name))
+		slog.Error(fmt.Sprintf("url %s not found", name))
 	}
 	return url
 }
+
+func (c View) IsHtmx() bool {
+	if htmx, ok := c.Locals(Htmx).(bool); ok {
+		return htmx
+	}
+	return false
+}
+
+func (c View) ClientRedirect(redirectURL string) error {
+	c.Set(HXRedirect, redirectURL)
+	return c.SendStatus(fiber.StatusFound)
+}
+
+// func (c ViewCtx) SetClientRefresh() {
+// 	c.Set(HXRefresh, "true")
+// }
+
+// func (c ViewCtx) IsHtmxCurrentURL() bool {
+// 	if url, ok := c.GetReqHeaders()[HxCurrentURL]; ok {
+// 		return url[0] == c.BaseURL()+c.OriginalURL()
+// 	}
+// 	return false
+// }

@@ -11,9 +11,9 @@ import (
 var ErrNotPermissions = fiber.ErrNotFound
 
 func Admin(h *handlers.Handler) error {
-	if user, ok := h.ViewCtx().Locals(view.UserKey).(models.User); ok {
+	if user, ok := h.Ctx().Locals(view.UserKey).(models.User); ok {
 		if user.Admin {
-			return h.ViewCtx().Next()
+			return h.Ctx().Next()
 		}
 	}
 	return ErrNotPermissions

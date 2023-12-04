@@ -8,16 +8,16 @@ import (
 )
 
 func Htmx(h *handlers.Handler) error {
-	h.ViewCtx().Locals(view.Htmx, false)
-	if _, ok := h.ViewCtx().GetReqHeaders()[view.HxRequest]; ok {
-		h.ViewCtx().Locals(view.Htmx, true)
+	h.Ctx().Locals(view.Htmx, false)
+	if _, ok := h.Ctx().GetReqHeaders()[view.HxRequest]; ok {
+		h.Ctx().Locals(view.Htmx, true)
 	}
-	return h.ViewCtx().Next()
+	return h.Ctx().Next()
 }
 
 func HxOnly(h *handlers.Handler) error {
-	if h.ViewCtx().IsHtmx() {
-		return h.ViewCtx().Next()
+	if h.View().IsHtmx() {
+		return h.Ctx().Next()
 	}
 	return fiber.ErrBadRequest
 }

@@ -5,5 +5,5 @@ import (
 )
 
 func Index(h *Handler) error {
-	return h.RenderTempl(view.Index, view.Map{})
+	return h.Render(view.Index, view.Map{})
 }

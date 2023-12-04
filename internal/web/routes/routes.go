@@ -20,7 +20,7 @@ type Router struct {
 	router      fiber.Router
 	config      *config.Config
 	database    *database.Database
-	session     *session.Store
+	store       *session.Store
 	validator   *validators.Validator
 	middlewares []func(*handlers.Handler) error
 }
@@ -29,14 +29,14 @@ func New(
 	_router fiber.Router,
 	_config *config.Config,
 	_database *database.Database,
-	_session *session.Store,
+	_store *session.Store,
 	_validator *validators.Validator,
 ) *Router {
 	r := Router{
 		router:    _router,
 		config:    _config,
 		database:  _database,
-		session:   _session,
+		store:     _store,
 		validator: _validator,
 		middlewares: []func(*handlers.Handler) error{
 			middlewares.Logger,
@@ -59,7 +59,7 @@ func New(
 
 func (r *Router) wrapper(handler func(*handlers.Handler) error) func(c *fiber.Ctx) error {
 	return func(c *fiber.Ctx) error {
-		return handler(handlers.New(c, r.database, r.config, r.session, r.validator))
+		return handler(handlers.New(c, r.database, r.config, r.store, r.validator))
 	}
 }
 

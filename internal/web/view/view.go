@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log/slog"
 
-	"github.com/Devil666face/fiber/internal/models"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -31,26 +30,6 @@ type View struct {
 	*fiber.Ctx
 }
 
-type Map fiber.Map
-
-func (m Map) get(key string) any {
-	if val, ok := m[key]; ok {
-		return val
-	}
-	return fmt.Errorf("not found value for key: %s in view map", key)
-}
-
-func (m Map) getUser() models.User {
-	if user, ok := m.get(UserKey).(models.User); ok {
-		return user
-	}
-	return models.User{}
-}
-
-func (m Map) notUser() bool {
-	return (m.getUser() == models.User{})
-}
-
 func New(c *fiber.Ctx) *View {
 	return &View{c}
 }
@@ -70,6 +49,10 @@ func (c View) URLto(name, key string, val any) string {
 	return c.getRouteURL(name, fiber.Map{
 		key: val,
 	})
+}
+
+func (c View) IsURL(name string) bool {
+	return c.Ctx.OriginalURL() == c.URL(name)
 }
 
 func (c View) getRouteURL(name string, fmap fiber.Map) string {

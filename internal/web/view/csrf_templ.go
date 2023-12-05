@@ -36,13 +36,12 @@ func Token(t string) templ.Component {
 
 func tokenScript(t string) templ.ComponentScript {
 	return templ.ComponentScript{
-		Name: `__templ_tokenScript_194b`,
-		Function: `function __templ_tokenScript_194b(t){document.body.addEventListener("htmx:configRequest", (event) => {
+		Name: `__templ_tokenScript_2d56`,
+		Function: `function __templ_tokenScript_2d56(t){document.body.addEventListener("htmx:configRequest", (event) => {
     event.detail.headers["X-CSRF-Token"] = t;
-  });
-  console.log(t);}`,
-		Call:       templ.SafeScript(`__templ_tokenScript_194b`, t),
-		CallInline: templ.SafeScriptInline(`__templ_tokenScript_194b`, t),
+  });}`,
+		Call:       templ.SafeScript(`__templ_tokenScript_2d56`, t),
+		CallInline: templ.SafeScriptInline(`__templ_tokenScript_2d56`, t),
 	}
 }
 

@@ -2,7 +2,7 @@ package view
 
 templ UserList(v *View, m Map) {
 	@Base("List of users") {
-		<div class="container pt-5">
+		<main class="container pt-5">
 			<div class="row">
 				<div class="col">
 					<button
@@ -18,8 +18,12 @@ templ UserList(v *View, m Map) {
 					</button>
 				</div>
 			</div>
-			@UserContent(v, m)
-		</div>
+			<div class="row">
+				<div class="col">
+					@UserContent(v, m)
+				</div>
+			</div>
+		</main>
 	}
 	@Modal("create_user")
 	@Modal("edit_user")

@@ -113,7 +113,7 @@ func UserForm(v *View, m Map) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		if m.notUser() {
+		if v.IsURL("user_create") {
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(" value=\"Create 🆕\"")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err

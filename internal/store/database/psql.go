@@ -11,7 +11,6 @@ import (
 
 func (d *Database) NewPsql() error {
 	var err error
-	d.PsqlConnect = d.getDNS()
 	if d.db, err = gorm.Open(postgres.New(postgres.Config{
 		DSN: d.PsqlConnect,
 	}), &gorm.Config{

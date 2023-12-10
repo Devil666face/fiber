@@ -25,6 +25,8 @@ func Must(_config *config.Config, _tables []any) *Database {
 		config: _config,
 		tables: _tables,
 	}
+	d.SqliteConnect = d.config.SqliteDB
+	d.PsqlConnect = d.getDNS()
 	if err := d.connect(); err != nil {
 		slog.Error(fmt.Sprintf("Connect database: %s", err))
 		//nolint:revive // If database not connect - exit

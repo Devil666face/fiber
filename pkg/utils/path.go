@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-func SetPath(file string) (string, error) {
+func SetDir(file string) (string, error) {
 	base, err := os.Getwd()
 	if err != nil {
 		return "", fmt.Errorf("get current folder: %w", err)

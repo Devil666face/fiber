@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Insall system dependences
-        run: sudo apt update && sudo apt-get install -y "$PACKAGES"
+        run: sudo apt update && sudo apt-get install -y apt-transport-https
+      - name: Insall system dependences
+        run: sudo apt-get install -y "$PACKAGES"
         env:
           PACKAGES: "tar wget"
       - name: Set up Go

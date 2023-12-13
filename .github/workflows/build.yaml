@@ -17,7 +17,7 @@ jobs:
       - name: Insall system dependences
         run: sudo apt-get install -y "$PACKAGES"
         env:
-          PACKAGES: tar
+          PACKAGES: tar upx-ucl
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -32,6 +32,8 @@ jobs:
           CGO_ENABLED: 0
           LDFLAGS: "-w -s"
           APP: ${{github.event.repository.name}}
+      - name: Compress binary
+        run: upx "$APP"
       - name: Make release tar
         run: tar -cvzf ${{github.event.repository.name}}.tgz "$FILES"
         env:

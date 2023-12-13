@@ -17,7 +17,7 @@ jobs:
       - name: Insall system dependences
         run: sudo apt update && sudo apt-get install -y "$PACKAGES"
         env:
-          PACKAGES: tar upx
+          PACKAGES: tar wget
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -33,7 +33,10 @@ jobs:
           LDFLAGS: "-w -s"
           APP: ${{github.event.repository.name}}
       - name: Compress binary
-        run: upx "$APP"
+        run:
+          wget https://github.com/upx/upx/releases/download/v4.2.1/upx-4.2.1-amd64_linux.tar.xz && \
+          tar -xf upx-4.2.1-amd64_linux.tar.xz && \
+          ./upx-4.2.1-amd64_linux/upx "$APP"
       - name: Make release tar
         run: tar -cvzf ${{github.event.repository.name}}.tgz "$FILES"
         env:

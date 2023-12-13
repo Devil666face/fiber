@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Insall system dependences
-        run: sudo apt-get install -y tar wget
+        run: sudo apt-get install -y tar wget upx
       - name: Set up Go
         uses: actions/setup-go@v4
         with:
@@ -31,10 +31,14 @@ jobs:
           LDFLAGS: "-w -s"
           APP: ${{github.event.repository.name}}
       - name: Compress binary
-        run:
-          wget https://github.com/upx/upx/releases/download/v4.2.1/upx-4.2.1-amd64_linux.tar.xz && \
-          tar -xf upx-4.2.1-amd64_linux.tar.xz && \
-          ./upx-4.2.1-amd64_linux/upx "$APP"
+        run: upx "$APP"
+        env:
+          APP: ${{github.event.repository.name}}
+      # - name: Compress binary
+      #   run:
+      #     wget https://github.com/upx/upx/releases/download/v4.2.1/upx-4.2.1-amd64_linux.tar.xz && \
+      #     tar -xf upx-4.2.1-amd64_linux.tar.xz && \
+      #     ./upx-4.2.1-amd64_linux/upx "$APP"
       - name: Make release tar
         run: tar -cvzf ${{github.event.repository.name}}.tgz "$FILES"
         env:

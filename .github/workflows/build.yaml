@@ -15,7 +15,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Insall system dependences
-        run: sudo apt-get install -y "$PACKAGES"
+        run: sudo apt update && sudo apt-get install -y "$PACKAGES"
         env:
           PACKAGES: tar upx
       - name: Set up Go

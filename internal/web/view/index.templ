@@ -1,0 +1,12 @@
+package view
+
+templ Index(v *View, m Map) {
+	@Base("Index") {
+		<div>
+			{ "Index" }
+		</div>
+		@Token(v.CsrfToken())
+	}
+}
+
+// <body onload={ Token(v.CsrfToken()) }></body>

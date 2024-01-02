@@ -1,0 +1,30 @@
+package view
+
+templ UserList(v *View, m Map) {
+	@Base("List of users") {
+		<main class="container pt-5">
+			<div class="row">
+				<div class="col">
+					<button
+ 						type="button"
+ 						class="btn btn-outline-primary form-control mb-2"
+ 						data-bs-toggle="modal"
+ 						data-bs-target="#create_user"
+ 						hx-get={ v.URL("user_create") }
+ 						hx-swap="innerHTML"
+ 						hx-target="#create_user_content"
+					>
+						Create user 🙍‍♂️
+					</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					@UserContent(v, m)
+				</div>
+			</div>
+		</main>
+	}
+	@Modal("create_user")
+	@Modal("edit_user")
+}

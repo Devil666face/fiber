@@ -1,0 +1,8 @@
+package view
+
+templ UserEdit(v *View, m Map) {
+	@ModalUser(v,m)
+	<form hx-put={ v.URLto("user_edit","id",m.getUser().ID) } hx-swap="innerHTML" hx-target="#edit_user_content">
+		@UserForm(v,m)
+	</form>
+}

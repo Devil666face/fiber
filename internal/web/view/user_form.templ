@@ -1,0 +1,67 @@
+package view
+
+templ UserForm(v *View, m Map) {
+	@Token(v.CsrfToken())
+	<div class="modal-body">
+		@Alert(m)
+		<label>Email ➡:</label>
+		<input
+ 			name="email"
+ 			required
+ 			placeholder="Email"
+ 			value={ m.getUser().Email }
+ 			type="email"
+ 			autofocus
+ 			class="form-control"
+		/>
+		<br/>
+		<label>Password 🔒:</label>
+		<input
+ 			name="password"
+ 			placeholder="Empty for don&#39;t edit password"
+ 			type="password"
+ 			value=""
+ 			class="form-control"
+ 			autocomplete="new-password"
+ 			if m.notUser() {
+				required
+			}
+		/>
+		<br/>
+		<label>Confirm password 🔏:</label>
+		<input
+ 			name="password_confirm"
+ 			placeholder="Empty for don&#39;t edit password"
+ 			type="password"
+ 			value=""
+ 			class="form-control"
+ 			autocomplete="new-password"
+ 			if m.notUser() {
+				required
+			}
+		/>
+		<br/>
+		<label>Admin 👨‍🔧:</label>
+		<input
+ 			name="admin"
+ 			type="checkbox"
+ 			value="true"
+ 			class="form-check-label"
+ 			if m.getUser().Admin {
+				checked
+			}
+		/>
+		<br/>
+		<div class="modal-footer">
+			<input
+ 				type="submit"
+ 				class="btn btn-outline-secondary form-control"
+ 				if v.IsURL("user_create") {
+					value="Create 🆕"
+				} else {
+					value="Edit 📝"
+				}
+			/>
+		</div>
+	</div>
+}

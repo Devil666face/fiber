@@ -1,0 +1,24 @@
+package view
+
+templ Token(t string) {
+	@tokenScript(t)
+}
+
+script tokenScript(t string) {
+  document.body.addEventListener("htmx:configRequest", (event) => {
+    event.detail.headers["X-CSRF-Token"] = t;
+  });
+}
+
+// script TooTest(s string) {
+//   console.log(s);
+// }
+
+// templ Union(token, s string) {
+// 	@Token(token)
+// 	@TooTest(s)
+// }
+
+// if (event.detail["verb"] !== "get") {
+//   event.detail.unfilteredParameters["csrf"] =  token ;
+// }

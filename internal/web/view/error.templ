@@ -1,0 +1,16 @@
+package view
+
+import "fmt"
+
+templ Error(code int, err string) {
+	@Base(fmt.Sprintf("Error %d",code)) {
+		<div class="container pt-5">
+			<h1>
+				{ fmt.Sprintln(code) }
+			</h1>
+			<p>
+				{ err }
+			</p>
+		</div>
+	}
+}

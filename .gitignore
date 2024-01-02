@@ -1,0 +1,9 @@
+/tmp
+/bin
+/media
+/.env
+/*.sqlite3
+/postgres
+/server.crt
+/server.key
+/vendor

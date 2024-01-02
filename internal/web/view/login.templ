@@ -1,0 +1,41 @@
+package view
+
+templ Login(v *View, m Map) {
+	@Base("Login") {
+		<main class="form-signin m-auto h-100 d-flex align-items-center justify-content-center">
+			<form hx-post={ v.URL("login") } enctype="multipart/form-data">
+				<h1 class="h3 mb-3 fw-normal">Sing in 🚪</h1>
+				@Alert(m)
+				<div class="form-floating">
+					<input
+ 						type="email"
+ 						name="email"
+ 						autofocus=""
+ 						autocapitalize="none"
+ 						autocomplete="username"
+ 						maxlength="150"
+ 						required=""
+ 						class="form-control"
+ 						placeholder="Email"
+					/>
+					<label for="floatingInput">Email ➡</label>
+				</div>
+				<div class="form-floating">
+					<input
+ 						type="password"
+ 						name="password"
+ 						autocomplete="current-password"
+ 						required=""
+ 						class="form-control"
+ 						placeholder="Password"
+					/>
+					<label for="floatingPassword">Password 🔒</label>
+				</div>
+				<button class="btn btn-outline-primary w-100 py-2" type="submit">
+					Login 🔑
+				</button>
+			</form>
+		</main>
+	}
+	@Token(v.CsrfToken())
+}

@@ -1,0 +1,8 @@
+package view
+
+templ UserCreate(v *View, m Map) {
+	@ModalUser(v,m)
+	<form hx-post={ v.URL("user_create") } hx-swap="innerHTML" hx-target="#create_user_content">
+		@UserForm(v,m)
+	</form>
+}
